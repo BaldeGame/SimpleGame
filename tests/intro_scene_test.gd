@@ -38,6 +38,7 @@ func aim(intro: Node3D, from: Vector3, at: Vector3) -> void:
 func _run() -> void:
 	var intro = load("res://scenes/intro.tscn").instantiate()
 	root.add_child(intro)
+	current_scene = intro
 	await wait_physics(2)
 	check(intro.menu.visible and intro.car.paused and not intro.player.enabled, "Opening menu blocks driving and walking")
 	check(intro.driving and intro.story.phase == State.Phase.ARRIVAL, "Introduction begins seated in car on arrival route")
@@ -133,8 +134,11 @@ func _run() -> void:
 	check(intro.in_capture and intro.story.phase == State.Phase.CAPTURED and not intro.player.enabled and intro.car.paused, "Crossing house entrance captures player and disables controls")
 	check(not intro.held_package.visible and intro.story.carried == -1, "Capture consumes final package")
 	await create_timer(2.4).timeout
-	check(intro.ending.visible and intro.fade.color.a > 0.8, "Capture fade reveals end-of-prologue panel")
-	intro.queue_free()
+	await process_frame
+	check(not is_instance_valid(intro), "Capture transition removes introduction and its controls")
+	check(is_instance_valid(current_scene) and current_scene.scene_file_path == "res://scenes/pressure_trial.tscn", "Capture fade opens the first survival trial")
+	if is_instance_valid(current_scene):
+		current_scene.queue_free()
 	await process_frame
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	print("Intro scene integration: %d failures" % failures)

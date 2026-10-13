@@ -16,7 +16,9 @@ La selección no promete un rendimiento determinado ni elimina el trabajo necesa
 
 Un vestíbulo individual se conserva como laboratorio de entregas. La escena principal ahora es un prólogo continuo: conducción, estacionamiento, baúl, mensajes, tres vecinos, último paquete y entrada a la casa abandonada.
 
-Incluye menú, sensibilidad, volumen, reinicio y audio original generado en el motor. Las pruebas de supervivencia y la red siguen pendientes. Los escenarios usan geometría provisional y las conversaciones son texto.
+Incluye menú, sensibilidad, volumen, reinicio y audio original generado en el motor. La captura conecta con La presión: una prueba individual completa con tres cierres, mecanismos relacionados, variantes resolubles, escape ileso o con lesión, muerte y reintento directo. La supervivencia permite explorar un tramo del sótano.
+
+La red y las demás pruebas siguen pendientes. Los escenarios usan geometría provisional y las conversaciones son texto. Las reglas de presión se conservan fuera de la escena, con una semilla reproducible y resultados terminales que no aceptan nuevas acciones.
 
 Las reglas de entrega están separadas de la escena y del jugador para que se puedan validar y, más adelante, ejecutar desde la autoridad de la partida.
 

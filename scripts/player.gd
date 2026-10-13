@@ -6,6 +6,7 @@ var sensitivity := 0.002
 var camera: Camera3D
 var ray: RayCast3D
 var enabled := false
+var speed_multiplier := 1.0
 
 func _ready() -> void:
 	var capsule := CapsuleShape3D.new()
@@ -35,8 +36,8 @@ func _physics_process(delta: float) -> void:
 	if enabled:
 		var axis := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 		direction = (transform.basis * Vector3(axis.x, 0, axis.y)).normalized()
-	velocity.x = direction.x * WALK_SPEED
-	velocity.z = direction.z * WALK_SPEED
+	velocity.x = direction.x * WALK_SPEED * speed_multiplier
+	velocity.z = direction.z * WALK_SPEED * speed_multiplier
 	if not is_on_floor():
 		velocity.y -= GRAVITY * delta
 	else:

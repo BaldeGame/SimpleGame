@@ -31,7 +31,6 @@ var menu: PanelContainer
 var phone: PanelContainer
 var phone_text: Label
 var resume_button: Button
-var ending: PanelContainer
 var fade: ColorRect
 var hud: Array[Control] = []
 
@@ -182,6 +181,7 @@ func _build_ui() -> void:
 	var description := _label(column, "Trae los encargos de tus vecinos.\nEstaciona en Los Cedros y abre el baúl.\nDespués queda una última dirección.", 18)
 	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	resume_button = _button(column, "Comenzar", _begin)
+	_button(column, "Probar La presión directamente", _start_trial)
 	_button(column, "Reiniciar el prólogo", _restart)
 	_label(column, "Sensibilidad del ratón", 16)
 	var sensitivity := HSlider.new()
@@ -213,14 +213,16 @@ func _build_ui() -> void:
 	phone_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_button(phone_column, "Guardar teléfono · Tab", _toggle_phone)
 	phone.visible = false
-	ending = _panel(root, 620, 330)
-	var end_column := _column(ending)
-	_label(end_column, "TE ESTABA ESPERANDO.", 32)
-	var end_text := _label(end_column, "La puerta se cerró.\nAlguien había preparado tu llegada.\n\nFin del prólogo. Las pruebas empiezan aquí.", 21)
-	end_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_button(end_column, "Volver a empezar", _restart)
-	_button(end_column, "Salir", func(): get_tree().quit())
-	ending.visible = false
+
+func _start_trial() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	var error := get_tree().change_scene_to_file("res://scenes/pressure_trial.tscn")
+	if error != OK:
+		in_capture = false
+		fade.color = Color(0, 0, 0, 0)
+		menu.visible = true
+		_feedback("No se pudo abrir la prueba. Puedes volver a intentarlo desde el menú.")
+		_apply_controls()
 
 func _begin() -> void:
 	started = true
@@ -432,5 +434,5 @@ func _capture() -> void:
 	_update_packages()
 	_update_ui()
 	var tween := create_tween()
-	tween.tween_property(fade, "color", Color(0, 0, 0, 0.85), 2.2)
-	tween.tween_callback(func(): ending.visible = true; ending.get_child(0).get_child(0).get_child(2).grab_focus())
+	tween.tween_property(fade, "color", Color(0, 0, 0, 1), 2.2)
+	tween.tween_callback(_start_trial)
