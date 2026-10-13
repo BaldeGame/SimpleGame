@@ -6,9 +6,75 @@
 
 ## Estado del proyecto
 
-Estamos en preproducción. Este README recoge la dirección creativa acordada y el alcance propuesto; todavía no hay una versión jugable, motor elegido ni instrucciones de instalación.
+Estamos en preproducción con un prólogo individual jugable y la primera prueba de supervivencia, **La presión**. Conducimos por el barrio, estacionamos, abrimos el baúl, consultamos mensajes y entregamos tres encargos. Un último paquete lleva a la casa abandonada; al entrar, la captura conduce a una silla con un mecanismo en marcha.
 
-**Nombre del juego:** Una entrega más.  
+Los escenarios y el carro utilizan geometría provisional. Los vecinos y el captor se comunican mediante texto; no hay voces grabadas ni personajes animados. Hay una prueba mortal completa y un breve tramo de exploración posterior. El catálogo ampliado de pruebas, el cooperativo y el desarrollo completo de la historia siguen pendientes.
+
+**Plataforma inicial:** PC, Windows x86_64.
+**Motor:** Godot 4.7.2 estándar, GDScript y renderizador Compatibility.
+La decisión técnica y sus límites están en [docs/decisions/001-pc-godot.md](docs/decisions/001-pc-godot.md).
+
+### Abrir la escena de prueba
+
+1. Descarga [Godot 4.7.2 estándar para Windows](https://github.com/godotengine/godot/releases/tag/4.7.2-stable).
+2. Descarga o clona este repositorio.
+3. Importa `project.godot` en Godot y pulsa F5. La escena principal es `scenes/intro.tscn`.
+4. Pulsa **Comenzar**. Conduce hasta Los Cedros, frena cerca de la zona marcada y pulsa F para bajar.
+5. Acércate a la parte trasera del carro, apunta al baúl y pulsa E. Recoge cada encargo y entrégalo en su puerta.
+6. Después de las tres entregas, vuelve al baúl y recoge el paquete dirigido a la casa 17. Sube con F, sigue la calle, estaciona frente a la casa y entra. La captura abre **La presión**.
+7. También puedes elegir **Probar La presión directamente** en el menú, o ejecutar `scenes/pressure_trial.tscn` con F6 para saltar el prólogo.
+
+La escena anterior, `scenes/delivery_lab.tscn`, se conserva como laboratorio de interacciones y se puede ejecutar con F6.
+
+| Control | Acción |
+| --- | --- |
+| W / S | Acelerar y reversa en el carro; avanzar y retroceder a pie |
+| A / D | Girar en el carro; desplazarse a pie |
+| Espacio | Frenar el carro |
+| F | Bajar al estacionar o subir cerca del carro con el último paquete |
+| Ratón | Mirar |
+| E | Abrir/cerrar el baúl, recoger un paquete o llamar/entregar |
+| Q | Devolver el encargo cerca del baúl abierto |
+| Tab | Abrir/cerrar los mensajes |
+| Esc | Abrir o cerrar el menú |
+
+El menú permite ajustar la sensibilidad y el volumen, reiniciar o salir. El teléfono y el menú detienen la conducción. Al cambiar de aplicación se pausa y se libera el cursor. El prólogo incluye una melodía original de radio y ambiente sonoro generado dentro del motor. Es individual y no requiere cuenta ni conexión de red. Todavía no se distribuye un ejecutable exportado.
+
+### La presión: primera prueba
+
+Despertamos sujetos a una silla. Tres ruedas A/B/C cambian los manómetros I/II/III. Cada giro afecta dos valores; los niveles circulan del 0 al 6. La etiqueta del paquete explica las conexiones, el orden de los cierres y el objetivo de cada etapa.
+
+- Apunta a una rueda y pulsa **E** para subir un nivel, o **Q** para bajar.
+- Iguala los tres manómetros al objetivo de la etapa y apunta al cierre correcto para accionarlo con **E**.
+- **Tab** abre la etiqueta. El tiempo sigue mientras lees; **Esc** abre una pausa completa.
+- Un cierre equivocado o mal ajustado aumenta la presión. Girar las ruedas es reversible y no tiene penalización.
+- Tienes tres minutos. El tiempo agotado o una presión del 100 % terminan en muerte.
+- El control rojo ofrece un escape con lesión, después de confirmar la consecuencia dentro del juego. La lesión reduce la velocidad al caminar en la exploración posterior.
+- Resolver los tres cierres libera al jugador sin lesiones. Después se puede leer la libreta de otro repartidor y llegar a la puerta de servicio.
+- Tras perder o terminar, puedes repetir la misma configuración, generar otra o volver al barrio.
+
+Las variantes cambian valores iniciales, objetivos y orden de cierres. Todas se generan a partir de movimientos alcanzables; no hay configuraciones deliberadamente imposibles. La semilla se conserva al elegir repetir.
+
+El mecanismo y sus consecuencias son una primera versión de las reglas y la presentación. El ritmo y la dificultad necesitan evaluación con jugadores.
+
+### Validación
+
+Con el ejecutable de Godot disponible como `godot` en la terminal, desde la raíz:
+
+```sh
+godot --headless --path . --editor --import --quit
+godot --headless --path . --script tests/delivery_test.gd
+godot --headless --path . --script tests/scene_test.gd
+godot --headless --path . --script tests/intro_state_test.gd
+godot --headless --path . --script tests/intro_scene_test.gd
+godot --headless --path . --script tests/car_test.gd
+godot --headless --path . --script tests/pressure_state_test.gd
+godot --headless --path . --script tests/pressure_scene_test.gd
+```
+
+Se comprueban las entregas, las interacciones, la progresión del prólogo, la transición al cautiverio, la conducción y los estados de supervivencia. Un solucionador independiente verifica 120 variantes de La presión. Las pruebas no sustituyen las sesiones con jugadores ni certifican rendimiento o multijugador.
+
+**Nombre del juego:** Una entrega más.
 **Repositorio actual:** BaldeGame/SimpleGame. El identificador del repositorio se conserva; no es el título del juego.
 
 ## La experiencia que queremos crear
@@ -140,7 +206,7 @@ El deseo de que sea fácil de controlar no elimina la dificultad de sus desafío
 
 ### 1. Definir la base del prototipo
 
-Elegir motor, plataforma inicial y arquitectura del cooperativo. Concretar controles, alcance del escenario y criterios para considerar una prueba terminada. No hay una decisión técnica tomada todavía.
+Base elegida: Windows y Godot 4.7.2. El vestíbulo, el prólogo y La presión ya permiten verificar la secuencia individual hasta la primera supervivencia o muerte. El siguiente paso es evaluar claridad y tensión con jugadores y validar una conexión cooperativa entre dos participantes.
 
 ### 2. Crear una secuencia completa de principio a fin
 
@@ -180,7 +246,7 @@ Introducir selección de salas, variantes resolubles y progresión narrativa. Am
 
 ## Decisiones pendientes
 
-- Motor y plataforma de lanzamiento; posible adaptación a otras plataformas.
+- Posible adaptación a otras plataformas después de Windows.
 - Sistema de conexión y alojamiento de partidas.
 - Dirección artística y alcance del sonido.
 - Historia completa del captor, vecinos y víctimas.
