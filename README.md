@@ -6,9 +6,42 @@
 
 ## Estado del proyecto
 
-Estamos en preproducción. Este README recoge la dirección creativa acordada y el alcance propuesto; todavía no hay una versión jugable, motor elegido ni instrucciones de instalación.
+Estamos en preproducción con una primera escena técnica jugable: un vestíbulo donde caminar, recoger y devolver paquetes y completar tres entregas. La historia completa, el carro, la casa, las pruebas de terror y el cooperativo todavía no están implementados.
 
-**Nombre del juego:** Una entrega más.  
+**Plataforma inicial:** PC, Windows x86_64.
+**Motor:** Godot 4.7.2 estándar, GDScript y renderizador Compatibility.
+La decisión técnica y sus límites están en [docs/decisions/001-pc-godot.md](docs/decisions/001-pc-godot.md).
+
+### Abrir la escena de prueba
+
+1. Descarga [Godot 4.7.2 estándar para Windows](https://github.com/godotengine/godot/releases/tag/4.7.2-stable).
+2. Descarga o clona este repositorio.
+3. Importa `project.godot` en Godot y pulsa F6 sobre `scenes/delivery_lab.tscn`, o F5 para iniciar el proyecto.
+4. Pulsa **Comenzar**. Camina hasta el banco, mira una caja, recógela y entrégala en la puerta de su etiqueta.
+
+| Control | Acción |
+| --- | --- |
+| WASD | Caminar |
+| Ratón | Mirar |
+| E | Recoger un paquete o llamar/entregar en una puerta |
+| Q | Devolver el paquete al banco |
+| Esc | Abrir o cerrar el menú |
+
+El menú permite ajustar la sensibilidad, reiniciar o salir. Al cambiar de aplicación se detienen las interacciones y se libera el cursor. Esta escena es individual, no requiere cuenta ni conexión de red. Todavía no se distribuye un ejecutable exportado.
+
+### Validación
+
+Con el ejecutable de Godot disponible como `godot` en la terminal, desde la raíz:
+
+```sh
+godot --headless --path . --editor --import --quit
+godot --headless --path . --script tests/delivery_test.gd
+godot --headless --path . --script tests/scene_test.gd
+```
+
+La primera prueba comprueba las reglas de entrega y los errores de destinatario. La segunda carga la escena, comprueba alcance e interacción de paquetes y puertas, completa los tres encargos y verifica colisiones y pausa. No sustituyen las pruebas con jugadores ni certifican rendimiento o multijugador.
+
+**Nombre del juego:** Una entrega más.
 **Repositorio actual:** BaldeGame/SimpleGame. El identificador del repositorio se conserva; no es el título del juego.
 
 ## La experiencia que queremos crear
@@ -140,7 +173,7 @@ El deseo de que sea fácil de controlar no elimina la dificultad de sus desafío
 
 ### 1. Definir la base del prototipo
 
-Elegir motor, plataforma inicial y arquitectura del cooperativo. Concretar controles, alcance del escenario y criterios para considerar una prueba terminada. No hay una decisión técnica tomada todavía.
+Base elegida: Windows y Godot 4.7.2. El vestíbulo individual ya prueba las interacciones básicas. El siguiente paso es concretar el recorrido en carro y validar una conexión cooperativa entre dos jugadores antes de ampliar el contenido.
 
 ### 2. Crear una secuencia completa de principio a fin
 
@@ -180,7 +213,7 @@ Introducir selección de salas, variantes resolubles y progresión narrativa. Am
 
 ## Decisiones pendientes
 
-- Motor y plataforma de lanzamiento; posible adaptación a otras plataformas.
+- Posible adaptación a otras plataformas después de Windows.
 - Sistema de conexión y alojamiento de partidas.
 - Dirección artística y alcance del sonido.
 - Historia completa del captor, vecinos y víctimas.
