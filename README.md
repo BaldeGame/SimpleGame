@@ -6,7 +6,9 @@
 
 ## Estado del proyecto
 
-Estamos en preproducción con una primera escena técnica jugable: un vestíbulo donde caminar, recoger y devolver paquetes y completar tres entregas. La historia completa, el carro, la casa, las pruebas de terror y el cooperativo todavía no están implementados.
+Estamos en preproducción con un prólogo individual jugable: conducir por el barrio, estacionar, abrir el baúl, consultar mensajes y entregar tres encargos. Al terminar, un último paquete lleva a la casa abandonada y a una transición hacia el cautiverio.
+
+Los escenarios y el carro utilizan geometría provisional. Los vecinos responden mediante texto; no hay voces grabadas ni personajes animados. Las pruebas mortales, el cooperativo y el desarrollo completo de la historia siguen pendientes.
 
 **Plataforma inicial:** PC, Windows x86_64.
 **Motor:** Godot 4.7.2 estándar, GDScript y renderizador Compatibility.
@@ -16,18 +18,26 @@ La decisión técnica y sus límites están en [docs/decisions/001-pc-godot.md](
 
 1. Descarga [Godot 4.7.2 estándar para Windows](https://github.com/godotengine/godot/releases/tag/4.7.2-stable).
 2. Descarga o clona este repositorio.
-3. Importa `project.godot` en Godot y pulsa F6 sobre `scenes/delivery_lab.tscn`, o F5 para iniciar el proyecto.
-4. Pulsa **Comenzar**. Camina hasta el banco, mira una caja, recógela y entrégala en la puerta de su etiqueta.
+3. Importa `project.godot` en Godot y pulsa F5. La escena principal es `scenes/intro.tscn`.
+4. Pulsa **Comenzar**. Conduce hasta Los Cedros, frena cerca de la zona marcada y pulsa F para bajar.
+5. Acércate a la parte trasera del carro, apunta al baúl y pulsa E. Recoge cada encargo y entrégalo en su puerta.
+6. Después de las tres entregas, vuelve al baúl y recoge el paquete dirigido a la casa 17. Sube con F, sigue la calle, estaciona frente a la casa y entra.
+
+La escena anterior, `scenes/delivery_lab.tscn`, se conserva como laboratorio de interacciones y se puede ejecutar con F6.
 
 | Control | Acción |
 | --- | --- |
-| WASD | Caminar |
+| W / S | Acelerar y reversa en el carro; avanzar y retroceder a pie |
+| A / D | Girar en el carro; desplazarse a pie |
+| Espacio | Frenar el carro |
+| F | Bajar al estacionar o subir cerca del carro con el último paquete |
 | Ratón | Mirar |
-| E | Recoger un paquete o llamar/entregar en una puerta |
-| Q | Devolver el paquete al banco |
+| E | Abrir/cerrar el baúl, recoger un paquete o llamar/entregar |
+| Q | Devolver el encargo cerca del baúl abierto |
+| Tab | Abrir/cerrar los mensajes |
 | Esc | Abrir o cerrar el menú |
 
-El menú permite ajustar la sensibilidad, reiniciar o salir. Al cambiar de aplicación se detienen las interacciones y se libera el cursor. Esta escena es individual, no requiere cuenta ni conexión de red. Todavía no se distribuye un ejecutable exportado.
+El menú permite ajustar la sensibilidad y el volumen, reiniciar o salir. El teléfono y el menú detienen la conducción. Al cambiar de aplicación se pausa y se libera el cursor. El prólogo incluye una melodía original de radio y ambiente sonoro generado dentro del motor. Es individual y no requiere cuenta ni conexión de red. Todavía no se distribuye un ejecutable exportado.
 
 ### Validación
 
@@ -37,9 +47,12 @@ Con el ejecutable de Godot disponible como `godot` en la terminal, desde la raí
 godot --headless --path . --editor --import --quit
 godot --headless --path . --script tests/delivery_test.gd
 godot --headless --path . --script tests/scene_test.gd
+godot --headless --path . --script tests/intro_state_test.gd
+godot --headless --path . --script tests/intro_scene_test.gd
+godot --headless --path . --script tests/car_test.gd
 ```
 
-La primera prueba comprueba las reglas de entrega y los errores de destinatario. La segunda carga la escena, comprueba alcance e interacción de paquetes y puertas, completa los tres encargos y verifica colisiones y pausa. No sustituyen las pruebas con jugadores ni certifican rendimiento o multijugador.
+Se comprueban las reglas de entrega, las interacciones del laboratorio, la progresión del prólogo, la ruta integrada y el comportamiento del carro. Las pruebas no sustituyen las sesiones con jugadores ni certifican rendimiento o multijugador.
 
 **Nombre del juego:** Una entrega más.
 **Repositorio actual:** BaldeGame/SimpleGame. El identificador del repositorio se conserva; no es el título del juego.
@@ -173,7 +186,7 @@ El deseo de que sea fácil de controlar no elimina la dificultad de sus desafío
 
 ### 1. Definir la base del prototipo
 
-Base elegida: Windows y Godot 4.7.2. El vestíbulo individual ya prueba las interacciones básicas. El siguiente paso es concretar el recorrido en carro y validar una conexión cooperativa entre dos jugadores antes de ampliar el contenido.
+Base elegida: Windows y Godot 4.7.2. El vestíbulo y el prólogo individual prueban las interacciones básicas. El siguiente paso es convertir el cierre del prólogo en una primera prueba de supervivencia completa y validar una conexión cooperativa entre dos jugadores.
 
 ### 2. Crear una secuencia completa de principio a fin
 

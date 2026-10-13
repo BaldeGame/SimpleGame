@@ -14,7 +14,9 @@ La selección no promete un rendimiento determinado ni elimina el trabajo necesa
 
 ## Primera entrega técnica
 
-Un vestíbulo individual permite caminar, mirar, recoger y devolver paquetes, llamar a puertas y completar tres entregas. Incluye menú, pausa de interacción, sensibilidad y reinicio. No incluye conducción, casa de terror ni red.
+Un vestíbulo individual se conserva como laboratorio de entregas. La escena principal ahora es un prólogo continuo: conducción, estacionamiento, baúl, mensajes, tres vecinos, último paquete y entrada a la casa abandonada.
+
+Incluye menú, sensibilidad, volumen, reinicio y audio original generado en el motor. Las pruebas de supervivencia y la red siguen pendientes. Los escenarios usan geometría provisional y las conversaciones son texto.
 
 Las reglas de entrega están separadas de la escena y del jugador para que se puedan validar y, más adelante, ejecutar desde la autoridad de la partida.
 
